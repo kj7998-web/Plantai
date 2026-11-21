@@ -1,0 +1,88 @@
+{
+  "kind": "browser-scenario",
+  "capture": {
+    "browser": {
+      "mode": "launch",
+      "executable_path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+      "headless": false,
+      "environment": {
+        "viewport": { "width": 1280, "height": 720 },
+        "locale": "en-US",
+        "timezone": "UTC"
+      }
+    },
+    "start_url": {
+      "url": "http://localhost:3000/"
+    },
+    "capture": {
+      "network": {
+        "request_body": true,
+        "response_body": true,
+        "header_values": true
+      }
+    }
+  },
+  "steps": [
+    {
+      "step_id": "visit_home",
+      "action": "wait_for_timeout",
+      "duration_ms": 2000,
+      "status": "completed"
+    },
+    {
+      "step_id": "create_folder_1",
+      "action": "fill",
+      "timeout_ms": 10000,
+      "locator": { "kind": "css", "selector": "input#folderName" },
+      "value": { "source": "literal", "value": "Test Folder 1" },
+      "status": "completed"
+    },
+    {
+      "step_id": "click_create_1",
+      "action": "click",
+      "timeout_ms": 10000,
+      "locator": { "kind": "role", "role": "button", "name": "Create" },
+      "status": "completed"
+    },
+    {
+      "step_id": "wait_after_create",
+      "action": "wait_for_timeout",
+      "duration_ms": 500,
+      "status": "completed"
+    },
+    {
+      "step_id": "create_folder_2",
+      "action": "fill",
+      "timeout_ms": 10000,
+      "locator": { "kind": "css", "selector": "input#folderName" },
+      "value": { "source": "literal", "value": "Test Folder 2" },
+      "status": "completed"
+    },
+    {
+      "step_id": "click_create_2",
+      "action": "click",
+      "timeout_ms": 10000,
+      "locator": { "kind": "role", "role": "button", "name": "Create" },
+      "status": "completed"
+    },
+    {
+      "step_id": "wait_after_create_2",
+      "action": "wait_for_timeout",
+      "duration_ms": 500,
+      "status": "completed"
+    },
+    {
+      "step_id": "delete_folder_0",
+      "action": "click",
+      "timeout_ms": 10000,
+      "locator": { "kind": "css", "selector": ".folder-item[data-index='0'] button.delete" },
+      "status": "completed"
+    },
+    {
+      "step_id": "wait_after_delete",
+      "action": "wait_for_timeout",
+      "duration_ms": 500,
+      "status": "completed"
+    }
+  ]
+}

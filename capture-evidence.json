@@ -1,0 +1,82 @@
+{
+  "$schema": "https://github.com/anthropics/rea/raw/main/schemas/evidence/capture-evidence.json",
+  "kind": "capture-evidence",
+  "version": "1.0.0",
+  "captured_at": "2026-11-21T10:00:00Z",
+  "captor": {
+    "type": "cli",
+    "version": "6.10.1"
+  },
+  "browser": {
+    "mode": "launch",
+    "executable_path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "headless": false,
+    "url": "http://localhost:3000/",
+    "viewport": { "width": 1280, "height": 720 }
+  },
+  "steps": [
+    {
+      "kind": "step",
+      "step_id": "visit_home",
+      "action": "wait_for_timeout",
+      "duration_ms": 2000,
+      "status": "completed"
+    },
+    {
+      "kind": "step",
+      "step_id": "create_folder_1",
+      "action": "fill",
+      "locator": { "kind": "css", "selector": "input#folderName" },
+      "value": "Test Folder 1",
+      "status": "completed"
+    },
+    {
+      "kind": "step",
+      "step_id": "click_create_1",
+      "action": "click",
+      "locator": { "kind": "role", "role": "button", "name": "Create" },
+      "status": "completed"
+    },
+    {
+      "kind": "step",
+      "step_id": "click_create_2",
+      "action": "click",
+      "locator": { "kind": "role", "role": "button", "name": "Create" },
+      "status": "completed"
+    },
+    {
+      "kind": "step",
+      "step_id": "create_folder_2",
+      "action": "fill",
+      "locator": { "kind": "css", "selector": "input#folderName" },
+      "value": "Test Folder 2",
+      "status": "completed"
+    },
+    {
+      "kind": "step",
+      "step_id": "click_create_2_confirm",
+      "action": "click",
+      "locator": { "kind": "role", "role": "button", "name": "Create" },
+      "status": "completed"
+    },
+    {
+      "kind": "step",
+      "step_id": "delete_folder_0",
+      "action": "click",
+      "locator": { "kind": "css", "selector": ".folder-item[data-index='0'] button.delete" },
+      "status": "completed"
+    }
+  ],
+  "observations": [
+    {
+      "kind": "observation",
+      "step_id": "visit_home",
+      "type": "dom",
+      "content": {
+        "title": "Simple Folder Manager",
+        "url": "http://localhost:3000/",
+        "body_text": "Folder Manager\nTest Folder 1\nTest Folder 2"
+      }
+    }
+  ]
+}
