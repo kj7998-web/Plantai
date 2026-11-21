@@ -19,12 +19,31 @@
   </div>
   <div id="list"></div>
   <script>
+    const KEY = 'plantai_folders_v1';
+    function getLocal() {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) {
+        const init = [{ id: '1', name: 'Existing Plants' }];
+        localStorage.setItem(KEY, JSON.stringify(init));
+        return init;
+      }
+      return JSON.parse(raw);
+    }
+    function setLocal(items) { localStorage.setItem(KEY, JSON.stringify(items)); }
+
     async function loadFolders() {
-      const res = await fetch('/api/folders');
-      const data = await res.json();
+      let folders;
+      try {
+        const res = await fetch('/api/folders');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        folders = data.folders;
+      } catch {
+        folders = getLocal();
+      }
       const list = document.getElementById('list');
       list.innerHTML = '';
-      data.folders.forEach((f, idx) => {
+      folders.forEach((f, idx) => {
         const div = document.createElement('div');
         div.className = 'folder-item';
         div.setAttribute('data-index', idx);
@@ -39,32 +58,54 @@
         list.appendChild(div);
       });
     }
+
     async function createFolder() {
       const input = document.getElementById('folderName');
       const name = input.value.trim();
       if (!name) return;
-      await fetch('/api/folders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      });
+      try {
+        const res = await fetch('/api/folders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+        if (!res.ok) throw new Error();
+      } catch {
+        const items = getLocal();
+        items.push({ id: String(Date.now()), name });
+        setLocal(items);
+      }
       input.value = '';
       await loadFolders();
     }
+
     async function renameFolder(id, idx) {
       const name = document.getElementById('rename-' + idx).value.trim();
       if (!name) return;
-      await fetch('/api/folders/' + id, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      });
+      try {
+        const res = await fetch('/api/folders/' + id, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+        if (!res.ok) throw new Error();
+      } catch {
+        const items = getLocal().map(f => f.id === id ? { ...f, name } : f);
+        setLocal(items);
+      }
       await loadFolders();
     }
+
     async function deleteFolder(id) {
-      await fetch('/api/folders/' + id, { method: 'DELETE' });
+      try {
+        const res = await fetch('/api/folders/' + id, { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+      } catch {
+        setLocal(getLocal().filter(f => f.id !== id));
+      }
       await loadFolders();
     }
+
     loadFolders();
   </script>
 </body>
